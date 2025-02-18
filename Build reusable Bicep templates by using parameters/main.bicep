@@ -1,4 +1,9 @@
 @description('The name of the environment. This must me dev, test, or prod.')
+@allowed([
+  'dev'
+  'test'
+  'prod'
+])
 param envName string = 'dev'
 @description('The unique name of the solution. This is used to ensure resource names are unique.')
 param solutionName string = 'toyhr${uniqueString(resourceGroup().id)}'
