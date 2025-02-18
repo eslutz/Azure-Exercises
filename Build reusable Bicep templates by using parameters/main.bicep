@@ -6,6 +6,8 @@
 ])
 param envName string = 'dev'
 @description('The unique name of the solution. This is used to ensure resource names are unique.')
+@minLength(5)
+@maxLength(25)
 param solutionName string = 'toyhr${uniqueString(resourceGroup().id)}'
 @description('The number of App Service plan instances.')
 param appServicePlanInstanceCount int = 1
