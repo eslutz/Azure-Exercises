@@ -14,15 +14,22 @@ param solutionName string = 'toyhr${uniqueString(resourceGroup().id)}'
 @maxValue(10)
 param appServicePlanInstanceCount int = 1
 @description('The name and tier of the App Service plan SKU.')
-param appServicePlanSku object = {
-  name: 'F1'
-  tier: 'Free'
-}
+param appServicePlanSku object
 @description('The Azure region where these resources should be deployed.')
 param location string = 'eastus'
+@description('The admin login username for SQL server.')
+@secure()
+param sqlServerAdminLogin string
+@description('The admin login password for SQL server.')
+@secure()
+param sqlServerAdminPassword string
+@description('The name and tier of the SQL database SKU.')
+param sqlDatabaseSku object
 
 var appServicePlanName = '${envName}-${solutionName}-plan'
 var appServiceAppName = '${envName}-${solutionName}-app'
+var sqlServerName = '${envName}-${solutionName}-sql'
+var sqlDatabaseName = 'Employees'
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2024-04-01' = {
   name: appServicePlanName
@@ -40,5 +47,24 @@ resource appServiceApp 'Microsoft.Web/sites@2024-04-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     httpsOnly: true
+  }
+}
+
+resource sqlServer 'Microsoft.Sql/servers@2021-11-01' = {
+  name: sqlServerName
+  location: location
+  properties: {
+    administratorLogin: sqlServerAdminLogin
+    administratorLoginPassword: sqlServerAdminPassword
+  }
+}
+
+resource sqlDatabase 'Microsoft.Sql/servers/databases@2021-11-01' = {
+  parent: sqlServer
+  name: sqlDatabaseName
+  location: location
+  sku: {
+    name: sqlDatabaseSku.name
+    tier: sqlDatabaseSku.tier
   }
 }
