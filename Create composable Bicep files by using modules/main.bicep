@@ -4,6 +4,8 @@ param location string = 'westus3'
 param appServiceAppName string = 'toy-${uniqueString(resourceGroup().id)}'
 @description('The name of the App Service plan SKU.')
 param appServicePlanSkuName string = 'F1'
+@description('Indicates if a CDN should be deployed.')
+param deployCdn bool = true
 
 var appServicePlanName = 'toy-product-launch-plan'
 
@@ -17,5 +19,13 @@ module app 'modules/app.bicep' = {
   }
 }
 
+module cdn 'modules/cdn.bicep' = if (deployCdn) {
+  name: 'toy-launch-cdn'
+  params: {
+    httpsOnly: true
+    originHostName: app.outputs.appServiceAppHostName
+  }
+}
+
 @description('The host name to use to access the website.')
-output websiteHostName string = app.outputs.appServiceAppHostName
+output websiteHostName string = deployCdn ? cdn.outputs.endpointHostName : app.outputs.appServiceAppHostName
