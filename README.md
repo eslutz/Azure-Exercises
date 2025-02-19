@@ -12,4 +12,5 @@ This learning path is composed of five modules:
 1. [Build reusable Bicep templates by using parameters](https://learn.microsoft.com/en-us/training/modules/build-reusable-bicep-templates-parameters/)
    - Completed [templates](./Build%20reusable%20Bicep%20templates%20by%20using%20parameters/)
 1. [Build flexible Bicep templates by using conditions and loops](https://learn.microsoft.com/en-us/training/modules/build-flexible-bicep-templates-conditions-loops/)
+   - Completed [templates](./Build%20reusable%20Bicep%20templates%20by%20using%20parameters/)
 1. [Create composable Bicep files by using modules](https://learn.microsoft.com/en-us/training/modules/create-composable-bicep-files-using-modules/)
